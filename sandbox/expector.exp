@@ -1,0 +1,24 @@
+#!/usr/bin/expect
+eval cd ./$env(PROJECT_NAME)
+eval spawn npm init
+expect "package name: "
+send "$env(PROJECT_NAME)\n"
+expect "version: "
+send "0.0.1\n"
+expect "description: "
+send "\n"
+expect "entry point:"
+send "$env(ENTRY_POINT)\n"
+expect "test command:"
+send "\n"
+expect "git repository:"
+send "\n"
+expect "keywords:"
+send "\n"
+expect "license:"
+send "MIT\n"
+expect "Is this ok?"
+send "\n"
+interact return
+spawn bash ../exec-node.sh
+expect eof
