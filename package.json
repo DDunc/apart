@@ -1,11 +1,10 @@
 {
   "name": "apart",
   "version": "0.0.1",
-  "description": "SOME INTERESTING NOTES: //expect \"author:\" //send \"$env(USER)\\n\"",
+  "description": "Apart",
   "main": "index.js",
   "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1",
-    "start": "node index.js"
+    "start": "chmod 755 ./apart.sh && chmod 755 ./expector.exp && chmod 755 ./exec-node.sh && ./apart.sh"
   },
   "author": "Duncan",
   "license": "MIT",
@@ -18,8 +17,7 @@
     "install-missing": "^1.1.52",
     "node-fetch": "^2.1.2",
     "recast": "^0.14.7",
-    "shelljs": "^0.8.1",
-    "write-pkg": "^3.1.0"
+    "shelljs": "^0.8.1"
   },
   "devDependencies": {},
   "repository": {
