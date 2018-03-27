@@ -38,19 +38,24 @@ const acorn = require('acorn');
 
 //console.log(testHello.helloUpper, testHello.howdy, "test!");
 
-const PROJECT_NAME = process.env.PROJECT_NAME;
+if (!shell.which('git')) {
+  shell.echo('This script requires git');
+  shell.exit(1);
+}
 
-const ENTRY_POINT = process.env.ENTRY_POINT;
+if (!shell.which('install-missing')) {
+  shell.echo('This script requires install-missing');
+  shell.exit(1);
+}
+
+const {PROJECT_NAME, ENTRY_POINT, GITHUB_USER} = process.env;
+
+//TODO read these options from .env
 
 const isApp = true;
-
 const generateReadme = true;
-
-const addDeps = true;
-const GITHUB_USER = process.env.GITHUB_USER;
-//So we run init, then run install missing
-//https://developer.github.com/v3/repos/releases/#create-a-release
-
+const addNewDep = true;
+const addChildDeps = true;
 
 if (isApp) {
   let file = editJsonFile(`${__dirname}/${PROJECT_NAME}/package.json`);
@@ -64,14 +69,12 @@ if (generateReadme) {
 			`)
 }
 
-
 //https://developer.github.com/v3/repos/#create
+// could read the url from the response
+//response.html_url
+//TODO include specific hash with addNewDep
+// command to get hash
 //git rev-list --max-parents=0 HEAD
-
-//response.html_url#
-
-//var originJSON = fs.readFileSync('.unicorn/package.json', 'utf-8')
-
 
 const result = require('dotenv').config({path: process.cwd().replace(`${process.env.PROJECT_NAME}`, '.env')});
 
@@ -79,14 +82,9 @@ if (result.error) {
   throw result.error
 }
 
-// console.log(result.parsed);
-//
-// console.log(process.env.ABSPATH, 'ABSPATH');
 const absDir = `${process.env.ABSPATH}/${process.env.PROJECT_NAME}`;
 
 shell.cd(absDir);
-
-const addChildDeps = true;
 
 if (addChildDeps) {
   shell.exec(`install-missing`)
@@ -95,10 +93,12 @@ if (addChildDeps) {
 shell.exec('git init');
 
 fs.writeFileSync(`${__dirname}/${PROJECT_NAME}/.gitignore`, `
-.env\n
-node_modules\n
-.idea\n
+.env
+node_modules
+.idea
 DS_store
+package.
+
 `);
 
 shell.exec('git add -A');
@@ -118,7 +118,7 @@ if (process.env.PROJECT_NAME && !process.env.PROJECT_NAME.includes('.')) {
   shell.rm('-rf', `${process.env.PROJECT_NAME}`);
 }
 
-  if (addDeps) {
+  if (addNewDep) {
     let localPackageJson = editJsonFile(`${__dirname}/package.json`);
     //const commitIsh = child_process.exec('git rev-list --max-parents=0 HEAD');
     //#${commitIsh}
