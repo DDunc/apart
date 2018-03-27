@@ -1,3 +1,9 @@
 const _ = require('lodash');
 
-console.log(_.upperFirst('hello world'));
+const howdy = _.upperFirst('hello world');
+
+console.log(howdy);
+
+module.exports = {
+  howdy
+};

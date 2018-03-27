@@ -115,7 +115,9 @@ fetch('https://api.github.com/user/repos', {
 shell.exec(`git remote add origin https://github.com/${process.env.GITHUB_USER}/${process.env.PROJECT_NAME}.git`);
 shell.exec('git push origin master');
 shell.cd(process.env.ABSPATH);
-shell.rm('-rf', `${process.env.PROJECT_NAME || 'nothin'}`);
+if (process.env.PROJECT_NAME && !process.env.PROJECTNAME.includes('.')) {
+  shell.rm('-rf', `${process.env.PROJECT_NAME || 'nothin'}`);
+}
 
   if (addDeps) {
     let localPackageJson = editJsonFile(`${__dirname}/package.json`);
@@ -123,6 +125,7 @@ shell.rm('-rf', `${process.env.PROJECT_NAME || 'nothin'}`);
     //#${commitIsh}
     localPackageJson.set(`dependencies.${PROJECT_NAME}`, `${GITHUB_USER}/${PROJECT_NAME}`);
     localPackageJson.save();
+    shell.exec('npm install')
   }
 
 
