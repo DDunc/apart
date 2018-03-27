@@ -1,1 +1,3 @@
-console.log('hello world');
+const _ = require('lodash');
+
+console.log(_.upperFirst('hello world'));

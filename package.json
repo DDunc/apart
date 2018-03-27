@@ -1,18 +1,38 @@
 {
   "name": "apart",
   "version": "0.0.1",
-  "description": "",
+  "description": "SOME INTERESTING NOTES: //expect \"author:\" //send \"$env(USER)\\n\"",
   "main": "index.js",
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1",
-    "start": "node ./index.js"
+    "start": "node index.js"
   },
   "author": "Duncan",
   "license": "MIT",
   "dependencies": {
+    "acorn": "^5.5.3",
+    "browserify": "^16.1.1",
+    "btoa": "^1.1.2",
     "dotenv": "^5.0.1",
-    "fs-extra": "^5.0.0",
+    "edit-json-file": "^1.0.8",
+    "install-missing": "^1.1.52",
+    "node-fetch": "^2.1.2",
+    "recast": "^0.14.7",
     "shelljs": "^0.8.1",
-    "suppose": "^0.6.2"
-  }
+    "write-pkg": "^3.1.0",
+    "test-mutate": "DDunc/test-mutate",
+    "with-install-missing": "DDunc/with-install-missing",
+    "with-install-missing-again": "DDunc/with-install-missing-again",
+    "with-install-missing-again-again": "DDunc/with-install-missing-again-again",
+    "also-git-ignore-test": "DDunc/also-git-ignore-test"
+  },
+  "devDependencies": {},
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/DDunc/apart.git"
+  },
+  "bugs": {
+    "url": "https://github.com/DDunc/apart/issues"
+  },
+  "homepage": "https://github.com/DDunc/apart#readme"
 }
