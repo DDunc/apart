@@ -111,21 +111,22 @@ fetch('https://api.github.com/user/repos', {
     "Content-Type": "text/json",
     'Authorization': 'Basic ' + btoa(`${process.env.GITHUB_USER}:${process.env.GITHUB_PASSWORD}`)
   }}).then(res => res.json()).then(res => {
-shell.exec(`git remote add origin https://github.com/${process.env.GITHUB_USER}/${process.env.PROJECT_NAME}.git`);
-shell.exec('git push origin master');
-shell.cd(process.env.ABSPATH);
-if (process.env.PROJECT_NAME && !process.env.PROJECT_NAME.includes('.')) {
-  shell.rm('-rf', `${process.env.PROJECT_NAME}`);
-}
+      shell.exec(`git remote add origin https://github.com/${process.env.GITHUB_USER}/${process.env.PROJECT_NAME}.git`);
+      shell.exec('git push origin master');
+      shell.cd(process.env.ABSPATH);
 
-  if (addNewDep) {
-    let localPackageJson = editJsonFile(`${__dirname}/package.json`);
-    //const commitIsh = child_process.exec('git rev-list --max-parents=0 HEAD');
-    //#${commitIsh}
-    localPackageJson.set(`dependencies.${PROJECT_NAME}`, `${GITHUB_USER}/${PROJECT_NAME}`);
-    localPackageJson.save();
-    shell.exec('npm install')
-  }
+      if (process.env.PROJECT_NAME && !process.env.PROJECT_NAME.includes('.')) {
+        shell.rm('-rf', `${process.env.PROJECT_NAME}`);
+      }
+
+      if (addNewDep) {
+        let localPackageJson = editJsonFile(`${__dirname}/package.json`);
+        //const commitIsh = child_process.exec('git rev-list --max-parents=0 HEAD');
+        //#${commitIsh}
+        localPackageJson.set(`dependencies.${PROJECT_NAME}`, `${GITHUB_USER}/${PROJECT_NAME}`);
+        localPackageJson.save();
+        shell.exec('npm install');
+      }
 
 
 

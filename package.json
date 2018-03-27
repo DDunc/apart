@@ -2,7 +2,7 @@
   "name": "apart",
   "version": "0.0.1",
   "description": "Apart",
-  "main": "index.js",
+  "main": "nodegit.js",
   "scripts": {
     "start": "chmod 755 ./apart.sh && chmod 755 ./expector.exp && chmod 755 ./exec-node.sh && ./apart.sh"
   },
