@@ -74,11 +74,6 @@ if (generateReadme) {
 //var originJSON = fs.readFileSync('.unicorn/package.json', 'utf-8')
 
 
-
-console.log(process.cwd().replace(`${process.env.PROJECT_NAME}`, '.env'));
-
-console.log(process.env.PROJECT_NAME, 'projname');
-
 const result = require('dotenv').config({path: process.cwd().replace(`${process.env.PROJECT_NAME}`, '.env')});
 
 if (result.error) {
@@ -119,11 +114,11 @@ fetch('https://api.github.com/user/repos', {
   }}).then(res => res.json()).then(res => {
 shell.exec(`git remote add origin https://github.com/${process.env.GITHUB_USER}/${process.env.PROJECT_NAME}.git`);
 shell.exec('git push origin master');
-
+shell.cd(process.env.ABSPATH);
+shell.rm('-rf', `${process.env.PROJECT_NAME || 'nothin'}`);
 
   if (addDeps) {
     let localPackageJson = editJsonFile(`${__dirname}/package.json`);
-    console.log(localPackageJson, 'as json');
     //const commitIsh = child_process.exec('git rev-list --max-parents=0 HEAD');
     //#${commitIsh}
     localPackageJson.set(`dependencies.${PROJECT_NAME}`, `${GITHUB_USER}/${PROJECT_NAME}`);

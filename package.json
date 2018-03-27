@@ -17,7 +17,10 @@
     "install-missing": "^1.1.52",
     "node-fetch": "^2.1.2",
     "recast": "^0.14.7",
-    "shelljs": "^0.8.1"
+    "shelljs": "^0.8.1",
+    "further-test-20": "DDunc/further-test-20",
+    "further-test-200": "DDunc/further-test-200",
+    "further-test-301": "DDunc/further-test-301"
   },
   "devDependencies": {},
   "repository": {
