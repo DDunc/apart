@@ -4,7 +4,6 @@ var btoa = require('btoa');
 var path = require('path');
 var browserify = require('browserify');
 var installMissing = require('install-missing');
-const writePkg = require('write-pkg');
 const editJsonFile = require("edit-json-file");
 const fs = require('fs');
 const acorn = require('acorn');
@@ -115,8 +114,8 @@ fetch('https://api.github.com/user/repos', {
 shell.exec(`git remote add origin https://github.com/${process.env.GITHUB_USER}/${process.env.PROJECT_NAME}.git`);
 shell.exec('git push origin master');
 shell.cd(process.env.ABSPATH);
-if (process.env.PROJECT_NAME && !process.env.PROJECTNAME.includes('.')) {
-  shell.rm('-rf', `${process.env.PROJECT_NAME || 'nothin'}`);
+if (process.env.PROJECT_NAME && !process.env.PROJECT_NAME.includes('.')) {
+  shell.rm('-rf', `${process.env.PROJECT_NAME}`);
 }
 
   if (addDeps) {
