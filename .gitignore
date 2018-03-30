@@ -1,5 +1,5 @@
 /tmp
 .env
+.apartshrc
 .idea
 node_modules
-package-lock.json

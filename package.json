@@ -4,6 +4,7 @@
   "description": "Apart",
   "main": "nodegit.js",
   "scripts": {
+    "init-apart": "node gen-env.js",
     "start": "chmod 755 ./apart.sh && chmod 755 ./expector.exp && chmod 755 ./exec-node.sh && ./apart.sh"
   },
   "author": "Duncan",
@@ -14,6 +15,7 @@
     "btoa": "^1.1.2",
     "dotenv": "^5.0.1",
     "edit-json-file": "^1.0.8",
+    "inquirer": "^5.2.0",
     "install-missing": "^1.1.52",
     "node-fetch": "^2.1.2",
     "recast": "^0.14.7",
