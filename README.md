@@ -23,7 +23,7 @@ You need to:
 Under active development: currently works for node with an ugly api, will not work for most
  client-side projects without babelifying and running install-missing on the output file.
 
-##Demo
+## Demo
 If you want to see how quick and easy it can be to create (and push!) a new repo with dependencies
 included, you can clone this project and run the following:
 
@@ -31,7 +31,7 @@ included, you can clone this project and run the following:
 
 __Note:__ This will actually create and push a new repo to Github!
 
-##Other Scripts
+## Other Scripts
 Run ``npm run init-apart`` to set your own options, including:
 * Persisting or deleting the new repo
 * Pushing to github as a private repo
