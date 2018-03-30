@@ -1,6 +1,8 @@
 const inquirer = require('inquirer');
 const fs = require('fs');
 
+fs.unlinkSync(`${__dirname}/.apartshrc`);
+
 const validateYN = (value) => {
   const pass = value.match('y') || value.match('n');
 
@@ -36,6 +38,18 @@ const generateShrc = () => {
       name: 'PUSH_TO_GITHUB',
       message: "Push new repo to github? (y/n)",
       validate: validateYN
+    },
+    {
+      type: 'input',
+      name: 'IS_PRIVATE',
+      message: 'Make new repo private (y/n)',
+      validate: validateYN
+    },
+    {
+      type: 'input',
+      name: 'DELETE_LOCAL_REPO',
+      message: 'Delete generated local folder for new package? (y/n)',
+      validate: validateYN
     }
   ];
 
@@ -43,7 +57,7 @@ const generateShrc = () => {
 
     let apartshrc = Object.keys(answers).reduce((av, cv) => {
       return `${av}${cv}=${answers[cv] === 'y' ? 'true' : 'false'}\n`
-    }, '');
+    }, 'IS_APP=false\n');
 
     fs.writeFile(`${__dirname}/.apartshrc`, apartshrc, (err, success) => {
       if (err) {

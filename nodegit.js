@@ -10,12 +10,22 @@ const acorn = require('acorn');
 const inquirer = require('inquirer');
 require('dotenv').config({path: `${__dirname}/.apartshrc`});
 
-const {IS_APP, GENERATE_README, ADD_NEW_DEP, ADD_CHILD_DEPS, PUSH_TO_GITHUB} = process.env;
+const {
+  IS_APP,
+  GENERATE_README,
+  ADD_NEW_DEP,
+  ADD_CHILD_DEPS,
+  PUSH_TO_GITHUB,
+  DELETE_LOCAL_REPO,
+  IS_PRIVATE} = process.env;
+
 const isApp = IS_APP;
 const generateReadme = GENERATE_README;
 const addNewDep = ADD_NEW_DEP;
 const addChildDeps = ADD_CHILD_DEPS;
 const pushToGithub = PUSH_TO_GITHUB;
+const deleteLocalRepo = DELETE_LOCAL_REPO;
+const isPrivate = IS_PRIVATE;
 
 if (!shell.which('git')) {
   shell.echo('This script requires git');
@@ -88,7 +98,7 @@ shell.exec('git commit -m "initial commit"');
 if (pushToGithub) {
   fetch('https://api.github.com/user/repos', {
     method: 'POST',
-    body: JSON.stringify({name: process.env.PROJECT_NAME, private: true}),
+    body: JSON.stringify({name: process.env.PROJECT_NAME, private: isPrivate}),
     headers: {
       "Content-Type": "text/json",
       'Authorization': 'Basic ' + btoa(`${process.env.GITHUB_USER}:${process.env.GITHUB_PASSWORD}`)
@@ -97,9 +107,9 @@ if (pushToGithub) {
     shell.exec('git push origin master');
     shell.cd(process.env.ABSPATH);
 
-    // if (process.env.PROJECT_NAME && !process.env.PROJECT_NAME.includes('.')) {
-    //   shell.rm('-rf', `${process.env.PROJECT_NAME}`);
-    // }
+    if (deleteLocalRepo && process.env.PROJECT_NAME && !process.env.PROJECT_NAME.includes('.')) {
+      shell.rm('-rf', `${process.env.PROJECT_NAME}`);
+    }
 
     if (addNewDep) {
       let localPackageJson = editJsonFile(`${__dirname}/package.json`);
