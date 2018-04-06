@@ -10,22 +10,21 @@ const acorn = require('acorn');
 const inquirer = require('inquirer');
 require('dotenv').config({path: `${__dirname}/.apartshrc`});
 
-const {
-  IS_APP,
-  GENERATE_README,
-  ADD_NEW_DEP,
-  ADD_CHILD_DEPS,
-  PUSH_TO_GITHUB,
-  DELETE_LOCAL_REPO,
-  IS_PRIVATE} = process.env;
 
-const isApp = IS_APP;
-const generateReadme = GENERATE_README;
-const addNewDep = ADD_NEW_DEP;
-const addChildDeps = ADD_CHILD_DEPS;
-const pushToGithub = PUSH_TO_GITHUB;
-const deleteLocalRepo = DELETE_LOCAL_REPO;
-const isPrivate = IS_PRIVATE;
+const {
+  // .apartshrc settings
+  IS_APP: isApp,
+  GENERATE_README: generateReadme,
+  ADD_NEW_DEP: addNewDep,
+  ADD_CHILD_DEPS: addChildDeps,
+  PUSH_TO_GITHUB: pushToGithub,
+  DELETE_LOCAL_REPO: deleteLocalRepo,
+  IS_PRIVATE: isPrivate,
+  // cli args
+  PROJECT_NAME,
+  ENTRY_POINT,
+  GITHUB_USER
+} = process.env;
 
 if (!shell.which('git')) {
   shell.echo('This script requires git');
@@ -36,10 +35,6 @@ if (!shell.which('install-missing')) {
   shell.echo('This script requires install-missing');
   shell.exit(1);
 }
-
-const {PROJECT_NAME, ENTRY_POINT, GITHUB_USER} = process.env;
-
-console.log(PROJECT_NAME, ENTRY_POINT, GITHUB_USER);
 
 if (isApp) {
   let file = editJsonFile(`${__dirname}/${PROJECT_NAME}/package.json`);
@@ -53,19 +48,18 @@ if (generateReadme) {
 			`)
 }
 
-//https://developer.github.com/v3/repos/#create
-// could read the url from the response
-//response.html_url
 //TODO include specific hash with addNewDep
-// command to get hash
-//git rev-list --max-parents=0 HEAD
+//via git rev-list --max-parents=0 HEAD or response from https://developer.github.com/v3/repos/#create
 
-const absDir = `${process.env.ABSPATH}/${process.env.PROJECT_NAME}`;
+const absDir = `${__dirname}/${process.env.PROJECT_NAME}`;
+console.log(absDir, 'absdir');
+console.log(__dirname, 'dirname');
 
 shell.cd(absDir);
 
 if (addChildDeps) {
-  shell.exec(`install-missing`)
+  shell.exec(`npx babel ${ENTRY_POINT} --out-file lib.js --copy-files`);
+  shell.exec(`install-missing lib.js`)
 }
 
 shell.exec('git init');
@@ -105,7 +99,7 @@ if (pushToGithub) {
     }}).then(res => res.json()).then(res => {
     shell.exec(`git remote add origin https://github.com/${process.env.GITHUB_USER}/${process.env.PROJECT_NAME}.git`);
     shell.exec('git push origin master');
-    shell.cd(process.env.ABSPATH);
+    shell.cd(absDir);
 
     if (deleteLocalRepo && process.env.PROJECT_NAME && !process.env.PROJECT_NAME.includes('.')) {
       shell.rm('-rf', `${process.env.PROJECT_NAME}`);
@@ -118,6 +112,8 @@ if (pushToGithub) {
       localPackageJson.set(`dependencies.${PROJECT_NAME}`, `${GITHUB_USER}/${PROJECT_NAME}`);
       localPackageJson.save();
       shell.exec('npm install');
+
+
     }
   }).catch(err => console.log(err, 'halp!'));
 }

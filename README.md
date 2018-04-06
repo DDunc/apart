@@ -17,7 +17,6 @@ You need to:
 4) Add any dependencies to the package.json
 5) git init
 6) Push your repo up for easy use in future projects and to share with others
-7) Npm Publish, if you're so inclined
 
 ## Current Status
 Under active development: currently works for node with an ugly api, will not work for most
