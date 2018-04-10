@@ -1,4 +1,5 @@
 #!/usr/bin/expect
+set timeout 20
 eval cd ./$env(PROJECT_NAME)
 eval spawn npm init
 expect "package name: "
