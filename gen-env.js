@@ -29,6 +29,12 @@ const generateShrc = () => {
     },
     {
       type: 'input',
+      name: 'INCLUDE_BABELIFIED',
+      message: 'Include babelfied output and set as entry point? (y/n)',
+      validate: validateYN
+    },
+    {
+      type: 'input',
       name: 'ADD_NEW_DEP',
       message: 'Automatically add the new package to the dependencies of current project? (y/n)',
       validate: validateYN

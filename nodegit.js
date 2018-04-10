@@ -20,6 +20,7 @@ const {
   PUSH_TO_GITHUB: pushToGithub,
   DELETE_LOCAL_REPO: deleteLocalRepo,
   IS_PRIVATE: isPrivate,
+  INCLUDE_BABELIFIED,
   // cli args
   PROJECT_NAME,
   ENTRY_POINT,
@@ -57,9 +58,18 @@ console.log(__dirname, 'dirname');
 
 shell.cd(absDir);
 
+//TODO: define this via env or generate it from project file name, obviously
+// it would be A Bad Thing if there already is a lib.js file
+const libDefault = 'lib.js';
+
+console.log(addChildDeps, 'add child Deps');
+
 if (addChildDeps) {
-  shell.exec(`npx babel ${ENTRY_POINT} --out-file lib.js --copy-files`);
-  shell.exec(`install-missing lib.js`)
+  shell.exec(`node ../node_modules/babel-cli/bin/babel.js ${ENTRY_POINT} --out-file ${libDefault} --copy-files`);
+  shell.exec(`install-missing ${libDefault}`);
+  // if(!includeBabelfied) {
+  //     shell.rm(`lib.js`)
+  // }
 }
 
 shell.exec('git init');
@@ -70,6 +80,12 @@ node_modules
 .idea
 DS_store
 `);
+
+if (INCLUDE_BABELIFIED) {
+    let projectJson = editJsonFile(`${__dirname}/${PROJECT_NAME}/package.json`);
+    projectJson.set('main', `${libDefault}`);
+    projectJson.save();
+}
 
 //TODO: replace with async
 // fs.writeFileSync(`${__dirname}/${PROJECT_NAME}/package.json`, `
