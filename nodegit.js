@@ -8,7 +8,7 @@ const editJsonFile = require("edit-json-file");
 const fs = require('fs');
 const acorn = require('acorn');
 const inquirer = require('inquirer');
-require('dotenv').config({path: `${__dirname}/.apartshrc`});
+require('dotenv').config({path: `${__dirname}/.apartrc`});
 
 
 const {
