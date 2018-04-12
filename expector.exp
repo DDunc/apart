@@ -17,7 +17,7 @@ send "\n"
 expect "keywords:"
 send "\n"
 expect "author:":
-send "\n"
+send "$USER\n"
 expect "license:"
 send "MIT\n"
 expect "Is this ok?"

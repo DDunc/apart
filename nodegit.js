@@ -8,11 +8,11 @@ const editJsonFile = require("edit-json-file");
 const fs = require('fs');
 const acorn = require('acorn');
 const inquirer = require('inquirer');
-require('dotenv').config({path: `${__dirname}/.apartshrc`});
+require('dotenv').config({path: `${__dirname}/.apartrc`});
 
 
 const {
-  // .apartshrc settings
+  // .apartrc settings
   IS_APP: isApp,
   GENERATE_README: generateReadme,
   ADD_NEW_DEP: addNewDep,
@@ -88,6 +88,7 @@ if (INCLUDE_BABELIFIED) {
 }
 
 //TODO: replace with async
+
 // fs.writeFileSync(`${__dirname}/${PROJECT_NAME}/package.json`, `
 // {
 //   "name": `${PROJECT_NAME}`,

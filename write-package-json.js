@@ -1,12 +1,4 @@
 const fs = require('fs');
-require('dotenv').config({path: `${__dirname}/.apartshrc`});
+require('dotenv').config({path: `${__dirname}/.apartrc`});
 
-fs.writeFileSync(`${__dirname}/demo/package.json`, `{
-  "name": "demo",
-  "version": "0.0.1",
-  "description": "",
-  "main": "whatever.js",
-  "author": "DDUNC",
-  "license": "MIT"
-}
-`);
+console.log(`${__dirname}/${process.argv[5]}/package.json`, 'pkg');

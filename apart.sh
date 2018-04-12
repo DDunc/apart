@@ -13,4 +13,4 @@ export ENTRY_POINT
 export GITHUB_USER
 export GITHUB_PASSWORD
 export ABSPATH
-./expector.exp
+./exec-node.sh
