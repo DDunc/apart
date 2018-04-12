@@ -9,7 +9,7 @@ const fs = require('fs');
 const acorn = require('acorn');
 const inquirer = require('inquirer');
 require('dotenv').config({path: `${__dirname}/.apartrc`});
-
+require('dotenv-parse-variables');
 
 const {
   // .apartshrc settings
@@ -74,10 +74,10 @@ DS_store
 //TODO: replace with async
 // fs.writeFileSync(`${__dirname}/${PROJECT_NAME}/package.json`, `
 // {
-//   "name": `${PROJECT_NAME}`,
+//   "name": ${PROJECT_NAME},
 //   "version": "0.0.1",
 //   "description": "",
-//   "main": `${ENTRY_POINT}`,
+//   "main": ${ENTRY_POINT},
 //   "scripts": {
 //     "preinstall":"cd $(pwd)"
 //   },
