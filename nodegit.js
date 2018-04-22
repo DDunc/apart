@@ -8,11 +8,9 @@ const editJsonFile = require("edit-json-file");
 const fs = require('fs');
 const acorn = require('acorn');
 const inquirer = require('inquirer');
-require('dotenv').config({path: `${__dirname}/.apartrc`});
-require('dotenv-parse-variables');
+const dotenv = require('dotenv');
 
 const {
-  // .apartshrc settings
   IS_APP: isApp,
   GENERATE_README: generateReadme,
   ADD_NEW_DEP: addNewDep,
@@ -20,11 +18,32 @@ const {
   PUSH_TO_GITHUB: pushToGithub,
   DELETE_LOCAL_REPO: deleteLocalRepo,
   IS_PRIVATE: isPrivate,
+} = JSON.parse(fs.readFileSync(`${__dirname}/.apartrc`));
+
+const {
+  // .apartrc
   // cli args
   PROJECT_NAME,
   ENTRY_POINT,
   GITHUB_USER
 } = process.env;
+
+console.log(typeof pushToGithub);
+
+//TODO: replace with async
+// fs.writeFileSync(`${__dirname}/${PROJECT_NAME}/package.json`, `
+// {
+//   "name": "${PROJECT_NAME}",
+//   "version": "0.0.1",
+//   "description": "",
+//   "main": "${ENTRY_POINT}",
+//   "scripts": {
+//     "preinstall":"cd $(pwd)"
+//   },
+//   "author": "${GITHUB_USER}",
+//   "license": "MIT",
+// }
+// `);
 
 if (!shell.which('git')) {
   shell.echo('This script requires git');
@@ -70,21 +89,6 @@ node_modules
 .idea
 DS_store
 `);
-
-//TODO: replace with async
-// fs.writeFileSync(`${__dirname}/${PROJECT_NAME}/package.json`, `
-// {
-//   "name": ${PROJECT_NAME},
-//   "version": "0.0.1",
-//   "description": "",
-//   "main": ${ENTRY_POINT},
-//   "scripts": {
-//     "preinstall":"cd $(pwd)"
-//   },
-//   "author": ${GITHUB_USER},
-//   "license": "MIT",
-// }
-// `);
 
 shell.exec('git add -A');
 shell.exec('git commit -m "initial commit"');

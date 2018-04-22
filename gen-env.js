@@ -1,7 +1,12 @@
 const inquirer = require('inquirer');
 const fs = require('fs');
 
-fs.unlinkSync(`${__dirname}/.apartrc`);
+try {
+  fs.unlinkSync(`${__dirname}/.apartrc`)
+} catch (err) {
+  console.log('who fucking cares');
+}
+
 
 const validateYN = (value) => {
   const pass = value.match('y') || value.match('n');
@@ -56,10 +61,11 @@ const generateShrc = () => {
   inquirer.prompt(questions).then(answers => {
 
     let apartrc = Object.keys(answers).reduce((av, cv) => {
-      return `${av}${cv}=${answers[cv] === 'y' ? 'true' : 'false'}\n`
-    }, 'IS_APP=false\n');
+      return {...av, [cv]: answers[cv] === 'y'}
+    }, {IS_APP: false});
 
-    fs.writeFile(`${__dirname}/.apartrc`, apartrc, (err, success) => {
+    console.log(apartrc);
+    fs.writeFile(`${__dirname}/.apartrc`, JSON.stringify(apartrc, null, '\t'), (err, success) => {
       if (err) {
         throw new Error(err);
       }
