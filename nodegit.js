@@ -1,14 +1,28 @@
-var shell = require('shelljs');
-var fetch = require('node-fetch');
-var btoa = require('btoa');
-var path = require('path');
-var browserify = require('browserify');
-var installMissing = require('install-missing');
+const shell = require('shelljs');
+const fetch = require('node-fetch');
+const btoa = require('btoa');
+const path = require('path');
+const browserify = require('browserify');
+const installMissing = require('install-missing');
 const editJsonFile = require("edit-json-file");
-const fs = require('fs');
+const fs = require('fs-extra');
 const acorn = require('acorn');
 const inquirer = require('inquirer');
 const dotenv = require('dotenv');
+
+if (!shell.which('git')) {
+  shell.echo('This script requires git');
+  shell.exit(1);
+}
+
+if (!shell.which('install-missing')) {
+  shell.echo('This script requires install-missing');
+  shell.exit(1);
+}
+
+if (!fs.existsSync('./.apartrc')) {
+  throw new Error('No .apartrc file found, run init-apart to generate your settings');
+}
 
 const {
   IS_APP: isApp,
@@ -20,40 +34,28 @@ const {
   IS_PRIVATE: isPrivate,
 } = JSON.parse(fs.readFileSync(`${__dirname}/.apartrc`));
 
-const {
-  // .apartrc
-  // cli args
-  PROJECT_NAME,
-  ENTRY_POINT,
-  GITHUB_USER
-} = process.env;
+const [nodePath, filePath, ENTRY_POINT, PROJECT_NAME, GITHUB_USER, GITHUB_PASSWORD, ...rest] = process.argv;
 
-console.log(typeof pushToGithub);
+const cleanEntry = ENTRY_POINT.replace('./', '');
+//TODO: replace with async like a normal person
+//"main": "${ENTRY_POINT}",
+fs.mkdirSync(`${__dirname}/${PROJECT_NAME}`);
 
-//TODO: replace with async
-// fs.writeFileSync(`${__dirname}/${PROJECT_NAME}/package.json`, `
-// {
-//   "name": "${PROJECT_NAME}",
-//   "version": "0.0.1",
-//   "description": "",
-//   "main": "${ENTRY_POINT}",
-//   "scripts": {
-//     "preinstall":"cd $(pwd)"
-//   },
-//   "author": "${GITHUB_USER}",
-//   "license": "MIT",
-// }
-// `);
+fs.copySync(`${cleanEntry}`, `${__dirname}/${PROJECT_NAME}/${cleanEntry}`);
 
-if (!shell.which('git')) {
-  shell.echo('This script requires git');
-  shell.exit(1);
-}
+fs.writeFileSync(`${__dirname}/${PROJECT_NAME}/package.json`, `
+{
+  "name": "${PROJECT_NAME}",
+  "version": "0.0.1",
+  "description": "",
+  "main": "lib.js",
+  "scripts": {
+    "preinstall": "cd $(pwd)"
+  },
+  "author": "${GITHUB_USER}",
+  "license": "MIT"
+}`);
 
-if (!shell.which('install-missing')) {
-  shell.echo('This script requires install-missing');
-  shell.exit(1);
-}
 
 if (isApp) {
   let file = editJsonFile(`${__dirname}/${PROJECT_NAME}/package.json`);
@@ -70,9 +72,7 @@ if (generateReadme) {
 //TODO include specific hash with addNewDep
 //via git rev-list --max-parents=0 HEAD or response from https://developer.github.com/v3/repos/#create
 
-const absDir = `${__dirname}/${process.env.PROJECT_NAME}`;
-console.log(absDir, 'absdir');
-console.log(__dirname, 'dirname');
+const absDir = `${__dirname}/${PROJECT_NAME}`;
 
 shell.cd(absDir);
 
@@ -119,5 +119,5 @@ if (pushToGithub) {
 
 
     }
-  }).catch(err => console.log(err, 'halp!'));
+  }).catch(err => console.log(err, 'its all gone wrong somehow'));
 }

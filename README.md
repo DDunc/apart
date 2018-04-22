@@ -26,7 +26,7 @@ Under active development: currently works for node with an ugly api, will not wo
 If you want to see how quick and easy it can be to create (and push!) a new repo with dependencies
 included, you can clone this project and run the following:
 
-``npm start ./testfile.js My-Cool-Module $GITHUB_USER $GITHUB_PASSWORD``
+``npm start ./example/require-example.js My-Cool-Module $GITHUB_USER $GITHUB_PASSWORD``
 
 __Note:__ This will actually create and push a new repo to Github!
 

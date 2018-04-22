@@ -1,12 +1,5 @@
 const inquirer = require('inquirer');
-const fs = require('fs');
-
-try {
-  fs.unlinkSync(`${__dirname}/.apartrc`)
-} catch (err) {
-  console.log('who fucking cares');
-}
-
+const fs = require('fs-extra');
 
 const validateYN = (value) => {
   const pass = value.match('y') || value.match('n');
@@ -64,13 +57,13 @@ const generateShrc = () => {
       return {...av, [cv]: answers[cv] === 'y'}
     }, {IS_APP: false});
 
-    console.log(apartrc);
     fs.writeFile(`${__dirname}/.apartrc`, JSON.stringify(apartrc, null, '\t'), (err, success) => {
       if (err) {
         throw new Error(err);
       }
+      console.log(apartrc)
     });
   });
 };
 
-generateShrc();
+fs.unlink(`${__dirname}/.apartrc`).then(ret => generateShrc()).catch(e => generateShrc());

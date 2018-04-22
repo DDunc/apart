@@ -1,9 +1,9 @@
 {
+	"IS_APP": false,
 	"GENERATE_README": true,
 	"ADD_CHILD_DEPS": true,
-	"ADD_NEW_DEP": true,
+	"ADD_NEW_DEP": false,
 	"PUSH_TO_GITHUB": false,
 	"IS_PRIVATE": false,
-	"DELETE_LOCAL_REPO": false,
-	"IS_APP": false
+	"DELETE_LOCAL_REPO": false
 }
